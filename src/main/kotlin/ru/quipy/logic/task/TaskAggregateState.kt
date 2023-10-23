@@ -1,7 +1,6 @@
-package ru.quipy.logic
+package ru.quipy.logic.task
 
 import ru.quipy.api.task.*
-import ru.quipy.api.task.TaskCreatedEvent
 import ru.quipy.core.annotations.StateTransitionFunc
 import ru.quipy.domain.AggregateState
 import java.util.*
@@ -12,6 +11,7 @@ class TaskAggregateState : AggregateState<UUID, TaskAggregate> {
     var updatedAt: Long = System.currentTimeMillis()
     lateinit var projectId: UUID
     lateinit var statusId: UUID
+    lateinit var executorId: UUID
     lateinit var taskTitle: String
     var assignees = mutableMapOf<UUID, UserEntityTask>()
 
@@ -21,35 +21,38 @@ class TaskAggregateState : AggregateState<UUID, TaskAggregate> {
     fun taskCreatedApply(event: TaskCreatedEvent) {
         projectId = event.projectId
         taskTitle = event.title
-        updatedAt = createdAt
+        updatedAt = event.createdAt
         taskId = event.taskId
     }
 
     @StateTransitionFunc
     fun taskTitleChangedApply(event: TaskTitleChangedEvent) {
         taskTitle = event.title
-        updatedAt = createdAt
-        taskId = event.taskId
-    }
-
-    @StateTransitionFunc
-    fun userExecutorApply(event: TaskAddedExecutorEvent) {
-        taskId = event.taskId
-        assignees[event.executorId] = UserEntityTask(event.executorId)
-        updatedAt = createdAt
+        updatedAt = event.createdAt
     }
 
     @StateTransitionFunc
     fun taskStatusAssignedApply(event: StatusAssignedToTaskEvent) {
-        taskId = event.taskId
-        updatedAt = event.createdAt
         statusId = event.statusId
+        updatedAt = event.createdAt
     }
 
     @StateTransitionFunc
-    fun removeExecutor(event: TaskRemovedExecutor) {
-        taskId = event.taskId
-        assignees.remove(event.executorId)
+    fun taskExecutorAddedApply(event: TaskAddedExecutorEvent) {
+        if (assignees.values.any { it.userId == event.executorId }) {
+            throw IllegalArgumentException("User already exists: ${event.executorId}")
+        }
+        assignees[event.executorId] = UserEntityTask(event.executorId)
+        updatedAt = event.createdAt
+    }
+
+    @StateTransitionFunc
+    fun deleteTaskApply(event: TaskRemoved) {
+        if (assignees.containsKey(event.executorId)) {
+            assignees.remove(event.executorId)
+            taskId = event.taskId
+            updatedAt = event.createdAt
+        }
     }
 }
 

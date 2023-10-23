@@ -1,9 +1,7 @@
-package ru.quipy.logic
+package ru.quipy.logic.task
 
 import ru.quipy.api.task.*
-import ru.quipy.api.task.TaskCreatedEvent
 import java.util.*
-
 
 fun TaskAggregateState.create(id: UUID, title: String, creatorId: String, projectId: UUID): TaskCreatedEvent {
     return TaskCreatedEvent(
@@ -34,10 +32,9 @@ fun TaskAggregateState.addExecutor(id: UUID): TaskAddedExecutorEvent {
     return TaskAddedExecutorEvent(taskId = this.getId(), executorId = id)
 }
 
-fun TaskAggregateState.removeExecutor(id: UUID): TaskRemovedExecutor {
-    if (!assignees.values.any { it.userId == id }) {
-        throw IllegalArgumentException("User doesn't exists: $id")
-    }
-
-    return TaskRemovedExecutor(taskId = this.getId(), executorId = id)
+fun TaskAggregateState.deleteTask(projectId: UUID, id: UUID): TaskRemoved {
+    return TaskRemoved(
+            taskId = id,
+            projectId = projectId
+    )
 }

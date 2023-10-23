@@ -32,14 +32,14 @@ class TagCreatedEvent(
     createdAt = createdAt,
 )
 
-@DomainEvent(name = TASK_CREATED_EVENT)
+@DomainEvent(name = ru.quipy.api.task.TASK_CREATED_EVENT)
 class TaskCreatedEvent(
     val projectId: UUID,
     val taskId: UUID,
     val taskName: String,
     createdAt: Long = System.currentTimeMillis(),
 ) : Event<ProjectAggregate>(
-    name = TASK_CREATED_EVENT,
+    name = ru.quipy.api.task.TASK_CREATED_EVENT,
     createdAt = createdAt
 )
 
