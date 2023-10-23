@@ -1,6 +1,7 @@
 package ru.quipy.logic
 
 import ru.quipy.api.*
+import ru.quipy.api.task.TaskCreatedEvent
 import ru.quipy.core.annotations.StateTransitionFunc
 import ru.quipy.domain.AggregateState
 import java.util.*
