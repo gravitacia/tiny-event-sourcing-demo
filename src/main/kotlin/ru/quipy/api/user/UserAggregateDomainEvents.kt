@@ -18,13 +18,3 @@ class UserCreatedEvent(
         name = USER_CREATED_EVENT,
         createdAt = createdAt,
 )
-
-@DomainEvent(name = USER_CHANGED_NAME_EVENT)
-class UserChangedNameEvent(
-        val userId: UUID,
-        val newName: String,
-        createdAt: Long = System.currentTimeMillis(),
-) : Event<UserAggregate>(
-        name = USER_CREATED_EVENT,
-        createdAt = createdAt,
-)
