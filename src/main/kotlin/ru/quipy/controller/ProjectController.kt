@@ -6,19 +6,21 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
-import ru.quipy.api.ProjectAggregate
-import ru.quipy.api.ProjectCreatedEvent
-import ru.quipy.api.task.TaskCreatedEvent
+import ru.quipy.api.project.ProjectAggregate
+import ru.quipy.api.project.ProjectCreatedEvent
+import ru.quipy.api.project.StatusCreatedEvent
+import ru.quipy.api.project.UserInvitedEvent
 import ru.quipy.core.EventSourcingService
-import ru.quipy.logic.ProjectAggregateState
-import ru.quipy.logic.addTask
-import ru.quipy.logic.task.create
+import ru.quipy.logic.project.ProjectAggregateState
+import ru.quipy.logic.project.create
+import ru.quipy.logic.project.createStatus
+import ru.quipy.logic.project.inviteUser
 import java.util.*
 
 @RestController
 @RequestMapping("/projects")
 class ProjectController(
-    val projectEsService: EventSourcingService<UUID, ProjectAggregate, ProjectAggregateState>
+        val projectEsService: EventSourcingService<UUID, ProjectAggregate, ProjectAggregateState>
 ) {
 
     @PostMapping("/{projectTitle}")
@@ -27,14 +29,18 @@ class ProjectController(
     }
 
     @GetMapping("/{projectId}")
-    fun getAccount(@PathVariable projectId: UUID) : ProjectAggregateState? {
+    fun getProject(@PathVariable projectId: UUID) : ProjectAggregateState? {
         return projectEsService.getState(projectId)
     }
 
-    @PostMapping("/{projectId}/tasks/{taskName}")
-    fun createTask(@PathVariable projectId: UUID, @PathVariable taskName: String) : TaskCreatedEvent {
-        return projectEsService.update(projectId) {
-            it.addTask(taskName)
-        }
+    @PostMapping("/status/{projectId}/{statusTitle}")
+    fun createStatus(@PathVariable projectId: UUID, @PathVariable statusTitle: String) : StatusCreatedEvent {
+        return projectEsService.update(projectId) { it.createStatus(statusTitle) }
     }
+
+    @PostMapping("/invite/{projectId}/{userId}")
+    fun inviteUser(@PathVariable projectId: UUID, @PathVariable userId: UUID) : UserInvitedEvent? {
+        return projectEsService.update(projectId) {it.inviteUser(userId)}
+    }
+
 }

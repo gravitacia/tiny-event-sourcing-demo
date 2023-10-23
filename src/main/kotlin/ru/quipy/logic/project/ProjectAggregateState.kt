@@ -1,0 +1,54 @@
+package ru.quipy.logic.project
+
+import ru.quipy.api.project.ProjectAggregate
+import ru.quipy.api.project.ProjectCreatedEvent
+import ru.quipy.api.project.StatusCreatedEvent
+import ru.quipy.api.project.UserInvitedEvent
+import ru.quipy.core.annotations.StateTransitionFunc
+import ru.quipy.domain.AggregateState
+import java.util.*
+
+// Service's business logic
+class ProjectAggregateState : AggregateState<UUID, ProjectAggregate> {
+    private lateinit var projectId: UUID
+    var createdAt: Long = System.currentTimeMillis()
+    var updatedAt: Long = System.currentTimeMillis()
+
+    lateinit var projectTitle: String
+    lateinit var creatorId: String
+    var projectStatuses = mutableMapOf<UUID, StatusEntity>()
+    var projectUsers = mutableMapOf<UUID, UserEntityProject>()
+
+    override fun getId() = projectId
+
+    // State transition functions which is represented by the class member function
+    @StateTransitionFunc
+    fun projectCreatedApply(event: ProjectCreatedEvent) {
+        projectId = event.projectId
+        projectTitle = event.title
+        creatorId = event.creatorId
+        updatedAt = createdAt
+    }
+    @StateTransitionFunc
+    fun statusCreatedApply(event: StatusCreatedEvent) {
+        projectStatuses[event.statusId] = StatusEntity(event.statusId, event.projectId, event.title, event.color)
+        updatedAt = createdAt
+    }
+
+    @StateTransitionFunc
+    fun userInvitedApply(event: UserInvitedEvent) {
+        projectUsers[event.userId] = UserEntityProject(event.userId)
+        updatedAt = createdAt
+    }
+}
+
+data class StatusEntity(
+        val id: UUID ,
+        val projectId: UUID,
+        val title: String,
+        val color: String
+)
+
+data class UserEntityProject(
+        val userId: UUID
+)
