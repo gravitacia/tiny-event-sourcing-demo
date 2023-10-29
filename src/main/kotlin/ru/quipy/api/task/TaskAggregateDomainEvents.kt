@@ -11,14 +11,14 @@ const val USER_ASSIGNED_TO_TASK_EVENT = "USER_ASSIGNED_TO_TASK_EVENT"
 const val TASK_REMOVED_EVENT = "TASK_REMOVED_EVENT"
 
 // API
-@DomainEvent(name = TASK_CREATED_EVENT)
+@DomainEvent(name = ru.quipy.api.project.TASK_CREATED_EVENT)
 class TaskCreatedEvent(
         val taskId: UUID,
         val projectId: UUID,
         val title: String,
         createdAt: Long = System.currentTimeMillis(),
 ) : Event<TaskAggregate>(
-        name = TASK_CREATED_EVENT,
+        name = ru.quipy.api.project.TASK_CREATED_EVENT,
         createdAt = createdAt,
 )
 

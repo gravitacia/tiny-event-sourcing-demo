@@ -2,6 +2,9 @@ package ru.quipy.controller
 
 import org.springframework.web.bind.annotation.*
 import ru.quipy.api.*
+import ru.quipy.api.user.UserAggregate
+import ru.quipy.api.user.UserChangedNameEvent
+import ru.quipy.api.user.UserCreatedEvent
 import ru.quipy.core.EventSourcingService
 import ru.quipy.logic.user.UserAggregateState
 import ru.quipy.logic.changeName
@@ -13,8 +16,8 @@ import java.util.*
 @RestController
 @RequestMapping("/users")
 class UserController(
-        val userEsService: EventSourcingService<UUID, UserAggregate, UserAggregateState>,
-        val userViewService: UserViewService,
+    val userEsService: EventSourcingService<UUID, UserAggregate, UserAggregateState>,
+    val userViewService: UserViewService,
 ) {
 
     @PostMapping("/create")

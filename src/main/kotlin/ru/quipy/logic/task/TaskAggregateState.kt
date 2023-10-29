@@ -1,5 +1,7 @@
 package ru.quipy.logic.task
 
+import ru.quipy.api.project.TaskCreatedEvent
+import ru.quipy.api.project.TaskTitleChangedEvent
 import ru.quipy.api.task.*
 import ru.quipy.core.annotations.StateTransitionFunc
 import ru.quipy.domain.AggregateState
