@@ -4,8 +4,8 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import ru.quipy.aggregate.project.ProjectAggregate
-import ru.quipy.aggregate.project.TagCreatedEvent
-import ru.quipy.aggregate.project.TaskCreatedEvent
+import ru.quipy.api.project.TagCreatedEvent
+import ru.quipy.api.project.TaskCreatedEvent
 import ru.quipy.streams.annotation.AggregateSubscriber
 import ru.quipy.streams.annotation.SubscribeEvent
 

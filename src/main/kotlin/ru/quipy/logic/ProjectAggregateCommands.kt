@@ -1,9 +1,9 @@
 package ru.quipy.logic
 
-import ru.quipy.aggregate.project.ProjectCreatedEvent
-import ru.quipy.aggregate.project.TagAssignedToTaskEvent
-import ru.quipy.aggregate.project.TagCreatedEvent
-import ru.quipy.aggregate.project.TaskCreatedEvent
+import ru.quipy.api.project.ProjectCreatedEvent
+import ru.quipy.api.project.TagAssignedToTaskEvent
+import ru.quipy.api.project.TagCreatedEvent
+import ru.quipy.api.project.TaskCreatedEvent
 import java.util.*
 
 

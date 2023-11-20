@@ -1,6 +1,10 @@
 package ru.quipy.logic
 
 import ru.quipy.aggregate.project.*
+import ru.quipy.api.project.ProjectCreatedEvent
+import ru.quipy.api.project.TagAssignedToTaskEvent
+import ru.quipy.api.project.TagCreatedEvent
+import ru.quipy.api.project.TaskCreatedEvent
 import ru.quipy.core.annotations.StateTransitionFunc
 import ru.quipy.domain.AggregateState
 import java.util.*

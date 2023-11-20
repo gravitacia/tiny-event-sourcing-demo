@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import ru.quipy.aggregate.project.ProjectAggregate
-import ru.quipy.aggregate.project.ProjectCreatedEvent
-import ru.quipy.aggregate.project.TaskCreatedEvent
+import ru.quipy.api.project.ProjectCreatedEvent
+import ru.quipy.api.project.TaskCreatedEvent
 import ru.quipy.core.EventSourcingService
 import ru.quipy.logic.ProjectAggregateState
 import ru.quipy.logic.addTask
