@@ -1,4 +1,4 @@
-package ru.quipy.api
+package ru.quipy.aggregate.project
 
 import ru.quipy.core.annotations.DomainEvent
 import ru.quipy.domain.Event
