@@ -1,10 +1,11 @@
-package ru.quipy.projections
+package ru.quipy.projections.statusTask
 
 import org.springframework.stereotype.Service;
 import ru.quipy.aggregate.project.ProjectAggregate;
 import ru.quipy.api.project.StatusCreatedEvent
 import ru.quipy.api.project.StatusDeletedEvent
 import ru.quipy.api.project.TaskStatusChangedEvent
+import ru.quipy.projections.Status
 import ru.quipy.streams.annotation.AggregateSubscriber;
 import ru.quipy.streams.annotation.SubscribeEvent;
 import java.util.Optional

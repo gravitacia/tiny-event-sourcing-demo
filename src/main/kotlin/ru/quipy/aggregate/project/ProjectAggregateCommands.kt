@@ -1,7 +1,7 @@
 package ru.quipy.aggregate.project
 
 import ru.quipy.api.project.*
-import ru.quipy.projections.StatusTasksService
+import ru.quipy.projections.statusTask.StatusTasksService
 import java.util.*
 
 

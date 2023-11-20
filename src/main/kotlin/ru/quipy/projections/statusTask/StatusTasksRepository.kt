@@ -1,6 +1,7 @@
-package ru.quipy.projections
+package ru.quipy.projections.statusTask
 
 import org.springframework.data.mongodb.repository.MongoRepository
+import ru.quipy.projections.Status
 import java.util.Optional
 import java.util.UUID
 
