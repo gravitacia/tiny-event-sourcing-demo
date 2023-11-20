@@ -1,8 +1,12 @@
 package ru.quipy.aggregate.project
 
 import ru.quipy.api.project.*
+import ru.quipy.projections.StatusTasksService
 import java.util.*
 
+
+// Commands : takes something -> returns event
+// Here the commands are represented by extension functions, but also can be the class member functions
 
 fun ProjectAggregateState.create(id: UUID, title: String, creatorId: UUID): ProjectCreatedEvent {
     return ProjectCreatedEvent(projectId = id, title = title, creatorId = creatorId)
@@ -31,10 +35,18 @@ fun ProjectAggregateState.addStatus(name: String, color: String): StatusCreatedE
     return StatusCreatedEvent(projectId = this.getId(), statusId = UUID.randomUUID(), statusName = name, color = color)
 }
 
-fun ProjectAggregateState.removeStatus(statusId: UUID, projectId: UUID): StatusDeletedEvent {
+fun ProjectAggregateState.removeStatus(
+        statusId: UUID,
+        projectId: UUID,
+        statusTasksService: StatusTasksService
+): StatusDeletedEvent {
     if (!projectStatus.containsKey(statusId)){
         throw IllegalArgumentException("Status doesn't exists: $statusId")
     }
+
+    val statusTasks = statusTasksService.getStatusTasks(statusId)
+    if (statusTasks.isPresent && statusTasks.get().isNotEmpty())
+        throw IllegalArgumentException("Status has tasks")
 
     var statusIsUsed = false;
     this.tasks.forEach { element ->
